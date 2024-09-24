@@ -1,0 +1,14 @@
+name: aids_study
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - matplotlib
+  - numpy
+  - pandas
+  - scikit-learn
+  - scipy
+  - jupyterlab
+  - pip
+  - pip:
+      - ucimlrepo
