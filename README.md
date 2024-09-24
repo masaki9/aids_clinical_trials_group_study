@@ -1,4 +1,4 @@
-# Learning Curves, Validation Curves, and Parameter Tuning with AIDS Clinical Trials Group Study Dataset
+### Learning Curves, Validation Curves, and Parameter Tuning with AIDS Clinical Trials Group Study Dataset
 
 To set up an environment for this repo, run the following:
 ```
