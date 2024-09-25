@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.use('Agg')
 
 from sklearn.model_selection import learning_curve, validation_curve
 from sklearn.metrics import classification_report
 
 
-def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title, file_name, train_sizes=np.linspace(0.1, 1.0, 20)):
+def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title, file_name='learning_curve.png', train_sizes=np.linspace(0.1, 1.0, 20), show=False):
     """
     Generates learning curve data and plots it.
 
@@ -21,6 +20,7 @@ def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title,
     - title: Title of the plot.
     - file_name: Name of the file to save the plot.
     - train_sizes: Array of training sizes to use for generating the learning curve.
+    - show: Whether to display the plot or save it to a file.
     """
     # Generate learning curve data
     train_sizes, train_scores, test_scores = learning_curve(
@@ -46,11 +46,11 @@ def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title,
     plt.legend(loc='best')
     plt.grid(True)
 
-    plt.savefig(file_name, bbox_inches='tight', dpi=200)
+    plt.show() if show else plt.savefig(file_name, bbox_inches='tight', dpi=200)
     plt.close()
 
 
-def plot_validation_curve(estimator, X_train, y_train, param_name, param_range, cv, scoring, file_name, title, xlabel, ylabel='Score'):
+def plot_validation_curve(estimator, X_train, y_train, param_name, param_range, cv, scoring, title, xlabel, ylabel='Score', file_name='validation_curve.png', show=False):
     """
     Generates validation curve data and plots it.
 
@@ -66,6 +66,7 @@ def plot_validation_curve(estimator, X_train, y_train, param_name, param_range, 
     - title: Title of the plot.
     - xlabel: Label for the x-axis.
     - ylabel: Label for the y-axis.
+    - show: Whether to display the plot or save it to a file.
     """
     # Generate validation curve data
     train_scores, test_scores = validation_curve(
@@ -92,7 +93,8 @@ def plot_validation_curve(estimator, X_train, y_train, param_name, param_range, 
     plt.legend(loc='best')
     plt.xticks(param_range)
     plt.grid(True)
-    plt.savefig(file_name, bbox_inches='tight', dpi=200)
+
+    plt.show() if show else plt.savefig(file_name, bbox_inches='tight', dpi=200)
     plt.close()
 
 

@@ -1,5 +1,6 @@
 import utils
 import numpy as np
+import os
 
 from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn.preprocessing import StandardScaler
@@ -7,8 +8,14 @@ from sklearn.pipeline import make_pipeline
 from sklearn.svm import SVC
 from ucimlrepo import fetch_ucirepo
 
+import matplotlib
+matplotlib.use('Agg')  # Use Agg to avoid GUI issues
+
 
 if __name__ == '__main__':
+    if not os.path.exists('output'):
+        os.makedirs('output')
+
     # Fetch the dataset from UCI
     aids_clinical_trials_group_study_175 = fetch_ucirepo(id=890)
 
@@ -28,19 +35,19 @@ if __name__ == '__main__':
     svm_pipe = make_pipeline(StandardScaler(), SVC(kernel='poly')).fit(X_train, y_train)
 
     # Learning Curve with Pre-Tuned SVM
-    utils.plot_learning_curve(svm_pipe, X_train, y_train, cv=cv, scoring=scoring, file_name='svm_learning_curve_pretuned.png', title='SVM Learning Curve (Polynomial Kernel, Pre-Tuned)', ylabel='F1 Score (Weighted)')
+    utils.plot_learning_curve(svm_pipe, X_train, y_train, cv=cv, scoring=scoring, file_name='output/svm_learning_curve_pretuned.png', title='SVM Learning Curve (Polynomial Kernel, Pre-Tuned)', ylabel='F1 Score (Weighted)')
 
     # Generate a classification report for the SVM model
-    utils.generate_classification_report(svm_pipe, X_test, y_test, title='SVM Classification Report', file_name='classification_report_pretuned.txt')
+    utils.generate_classification_report(svm_pipe, X_test, y_test, title='SVM Classification Report', file_name='output/classification_report_pretuned.txt')
 
     # Validation Curve with C
-    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__C', param_range=[0.1, 0.3, 0.7, 1.0, 1.5, 2.0, 3.0], cv=cv, scoring=scoring, file_name='svm_validation_curve_c.png', title='Validation Curve for SVM with Varying C', xlabel='C', ylabel='F1 Score (Weighted)')
+    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__C', param_range=[0.1, 0.3, 0.7, 1.0, 1.5, 2.0, 3.0], cv=cv, scoring=scoring, file_name='output/svm_validation_curve_c.png', title='Validation Curve for SVM with Varying C', xlabel='C', ylabel='F1 Score (Weighted)')
 
     # Validation Curve with Degree
-    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__degree', param_range=np.arange(1, 10), cv=cv, scoring=scoring, file_name='svm_validation_curve_degree.png', title='Validation Curve for SVM with Varying Degree', xlabel='Degree', ylabel='F1 Score (Weighted)')
+    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__degree', param_range=np.arange(1, 10), cv=cv, scoring=scoring, file_name='output/svm_validation_curve_degree.png', title='Validation Curve for SVM with Varying Degree', xlabel='Degree', ylabel='F1 Score (Weighted)')
 
     # Validation Curve with Coefficient
-    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__coef0', param_range=[0.1, 0.3, 0.7, 1.0, 1.5, 2.0, 3.0], cv=cv, scoring=scoring, file_name='svm_validation_curve_coef.png', title='Validation Curve for SVM with Varying Coefficient', xlabel='Coefficient', ylabel='F1 Score (Weighted)')
+    utils.plot_validation_curve(svm_pipe, X_train, y_train, param_name='svc__coef0', param_range=[0.1, 0.3, 0.7, 1.0, 1.5, 2.0, 3.0], cv=cv, scoring=scoring, file_name='output/svm_validation_curve_coef.png', title='Validation Curve for SVM with Varying Coefficient', xlabel='Coefficient', ylabel='F1 Score (Weighted)')
 
     # Grid Search
 
@@ -65,7 +72,7 @@ if __name__ == '__main__':
     best_estimator = grid_search.best_estimator_
 
     # Evaluate the best estimator on the test set and generate a classification report
-    utils.generate_classification_report(best_estimator, X_test, y_test, title='SVM Classification Report', file_name='classification_report.txt')
+    utils.generate_classification_report(best_estimator, X_test, y_test, title='SVM Classification Report', file_name='output/classification_report.txt')
 
     # Learning curve SVM with the tuned parameters
-    utils.plot_learning_curve(best_estimator, X_train, y_train, cv, scoring, file_name='svm_learning_curve_posttuned.png', title='SVM Learning Curve (Polynomial Kernel, Post-Tuned)', ylabel='F1 Score (Weighted)')
+    utils.plot_learning_curve(best_estimator, X_train, y_train, cv, scoring, file_name='output/svm_learning_curve_posttuned.png', title='SVM Learning Curve (Polynomial Kernel, Post-Tuned)', ylabel='F1 Score (Weighted)')
