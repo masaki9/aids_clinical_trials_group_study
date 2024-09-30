@@ -6,7 +6,7 @@ from sklearn.model_selection import learning_curve, validation_curve
 from sklearn.metrics import classification_report
 
 
-def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title, file_name='learning_curve.png', train_sizes=np.linspace(0.1, 1.0, 20), show=False):
+def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title, file_name='learning_curve.png', train_sizes=np.linspace(0.1, 1.0, 20), ylim=None, show=False):
     """
     Generates learning curve data and plots it.
 
@@ -20,6 +20,7 @@ def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title,
     - title: Title of the plot.
     - file_name: Name of the file to save the plot.
     - train_sizes: Array of training sizes to use for generating the learning curve.
+    - ylim: Y-axis limits.
     - show: Whether to display the plot or save it to a file.
     """
     # Generate learning curve data
@@ -45,6 +46,9 @@ def plot_learning_curve(estimator, X_train, y_train, cv, scoring, ylabel, title,
     plt.ylabel(ylabel)
     plt.legend(loc='best')
     plt.grid(True)
+
+    if ylim:
+        plt.ylim(ylim)
 
     plt.show() if show else plt.savefig(file_name, bbox_inches='tight', dpi=200)
     plt.close()
